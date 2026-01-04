@@ -3,12 +3,12 @@ pipeline {
 stages {
         stage('Terraform Init') {
             steps {
-                sh 'cd terraform && terraform init'
+                sh 'terraform init'
             }
         }
 stage('Terraform Apply') {
             steps {
-                sh 'cd terraform && terraform apply -auto-approve'
+                sh 'terraform apply -auto-approve'
             }
         }
 stage('Configure Server using Ansible') {
