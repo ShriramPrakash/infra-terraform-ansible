@@ -1,20 +1,35 @@
 pipeline {
     agent any
-stages {
+
+    environment {
+        AWS_DEFAULT_REGION = "ap-south-1"
+    }
+
+    stages {
+
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
-stage('Terraform Apply') {
+
+        stage('Terraform Plan') {
             steps {
-                sh 'terraform plan && terraform apply -auto-approve'
+                sh 'terraform plan -input=false -out=tfplan'
             }
         }
-stage('Configure Server using Ansible') {
+
+        stage('Terraform Apply') {
+            steps {
+                sh 'terraform apply -input=false tfplan'
+            }
+        }
+
+        stage('Configure Server using Ansible') {
             steps {
                 sh 'cd ansible && ansible-playbook -i inventory playbook.yml'
             }
         }
     }
 }
+
