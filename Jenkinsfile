@@ -8,7 +8,7 @@ stages {
         }
 stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                sh 'terraform plan && terraform apply -auto-approve'
             }
         }
 stage('Configure Server using Ansible') {
