@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+stages {
+        stage('Terraform Init') {
+            steps {
+                sh 'cd terraform && terraform init'
+            }
+        }
+stage('Terraform Apply') {
+            steps {
+                sh 'cd terraform && terraform apply -auto-approve'
+            }
+        }
+stage('Configure Server using Ansible') {
+            steps {
+                sh 'cd ansible && ansible-playbook -i inventory playbook.yml'
+            }
+        }
+    }
+}
